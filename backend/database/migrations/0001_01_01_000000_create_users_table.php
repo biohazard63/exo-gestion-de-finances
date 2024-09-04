@@ -17,9 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['user', 'admin'])->default('user')->after('password');
             $table->rememberToken();
-            $table->foreignId('current_team_id')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
         });
 
@@ -29,6 +28,7 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
+        // Table pour gérer les sessions utilisateurs
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();

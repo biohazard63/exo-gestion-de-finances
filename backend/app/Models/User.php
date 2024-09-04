@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,11 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, HasProfilePhoto, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -60,6 +56,16 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => 'string',
         ];
+    }
+
+    /**
+     * Relation avec le modèle Transaction.
+     * Un utilisateur peut avoir plusieurs transactions.
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }
