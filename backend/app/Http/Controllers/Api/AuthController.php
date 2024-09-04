@@ -11,7 +11,29 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     /**
-     * Handle an authentication attempt.
+     * @OA\Post(
+     *   path="/api/login",
+     *   summary="Login a user",
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(
+     *       required={"email", "password"},
+     *       @OA\Property(property="email", type="string", format="email", example="johndoe@example.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="password")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Login successful",
+     *     @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Success"),
+     *       @OA\Property(property="token", type="string", example="token")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=422,
+     *     description="Validation error"
+     *   )
+     * )
      */
     public function login(Request $request)
     {
@@ -36,7 +58,18 @@ class AuthController extends Controller
     }
 
     /**
-     * Revoke the token that was used to authenticate the current request.
+     * @OA\Post(
+     *   path="/api/logout",
+     *   summary="Logout a user",
+     *   security={{"sanctum":{}}},
+     *   @OA\Response(
+     *     response=200,
+     *     description="Logout successful",
+     *     @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Logged out")
+     *     )
+     *   )
+     * )
      */
     public function logout(Request $request)
     {

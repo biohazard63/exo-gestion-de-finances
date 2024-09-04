@@ -8,7 +8,18 @@ use Illuminate\Http\Request;
 class TransactionController extends Controller
 {
     /**
-     * Display a listing of the transactions.
+     * @OA\Get(
+     *   path="/api/transactions",
+     *   summary="Display a listing of the transactions",
+     *   @OA\Response(
+     *     response=200,
+     *     description="A list of transactions",
+     *     @OA\JsonContent(
+     *       type="array",
+     *       @OA\Items(ref="#/components/schemas/Transaction")
+     *     )
+     *   )
+     * )
      */
     public function index()
     {
@@ -17,7 +28,28 @@ class TransactionController extends Controller
     }
 
     /**
-     * Store a newly created transaction in storage.
+     * @OA\Post(
+     *   path="/api/transactions",
+     *   summary="Store a newly created transaction in storage",
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(
+     *       required={"user_id", "amount", "type"},
+     *       @OA\Property(property="user_id", type="integer", example=1),
+     *       @OA\Property(property="amount", type="number", format="float", example=100.50),
+     *       @OA\Property(property="type", type="string", enum={"credit", "debit"}, example="credit"),
+     *       @OA\Property(property="description", type="string", example="Payment for services")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=201,
+     *     description="Transaction created",
+     *     @OA\JsonContent(ref="#/components/schemas/Transaction")
+     *   ),
+     *   @OA\Response(
+     *     response=422,
+     *     description="Validation error"
+     *   )
+     * )
      */
     public function store(Request $request)
     {
@@ -39,7 +71,25 @@ class TransactionController extends Controller
     }
 
     /**
-     * Display the specified transaction.
+     * @OA\Get(
+     *   path="/api/transactions/{id}",
+     *   summary="Display the specified transaction",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="A transaction",
+     *     @OA\JsonContent(ref="#/components/schemas/Transaction")
+     *   ),
+     *   @OA\Response(
+     *     response=404,
+     *     description="Transaction not found"
+     *   )
+     * )
      */
     public function show($id)
     {
@@ -48,7 +98,37 @@ class TransactionController extends Controller
     }
 
     /**
-     * Update the specified transaction in storage.
+     * @OA\Put(
+     *   path="/api/transactions/{id}",
+     *   summary="Update the specified transaction in storage",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\RequestBody(
+     *     @OA\JsonContent(
+     *       @OA\Property(property="user_id", type="integer", example=1),
+     *       @OA\Property(property="amount", type="number", format="float", example=100.50),
+     *       @OA\Property(property="type", type="string", enum={"credit", "debit"}, example="credit"),
+     *       @OA\Property(property="description", type="string", example="Payment for services")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Transaction updated",
+     *     @OA\JsonContent(ref="#/components/schemas/Transaction")
+     *   ),
+     *   @OA\Response(
+     *     response=404,
+     *     description="Transaction not found"
+     *   ),
+     *   @OA\Response(
+     *     response=422,
+     *     description="Validation error"
+     *   )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -67,7 +147,24 @@ class TransactionController extends Controller
     }
 
     /**
-     * Remove the specified transaction from storage.
+     * @OA\Delete(
+     *   path="/api/transactions/{id}",
+     *   summary="Remove the specified transaction from storage",
+     *   @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\Response(
+     *     response=204,
+     *     description="Transaction deleted"
+     *   ),
+     *   @OA\Response(
+     *     response=404,
+     *     description="Transaction not found"
+     *   )
+     * )
      */
     public function destroy($id)
     {
