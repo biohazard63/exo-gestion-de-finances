@@ -56,6 +56,7 @@ class TransactionController extends Controller
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'amount' => 'required|numeric',
+            'customerName' => 'sometimes|string|nullable',
             'type' => 'required|in:credit,debit',
             'description' => 'sometimes|string|nullable',
         ]);
@@ -63,6 +64,7 @@ class TransactionController extends Controller
         $transaction = Transaction::create([
             'user_id' => $request->user_id,
             'amount' => $request->amount,
+            'customerName' => $request->customerName,
             'type' => $request->type,
             'description' => $request->description,
         ]);
@@ -137,6 +139,7 @@ class TransactionController extends Controller
         $request->validate([
             'user_id' => 'sometimes|exists:users,id',
             'amount' => 'sometimes|numeric',
+            'customerName' => 'sometimes|string|nullable',
             'type' => 'sometimes|in:credit,debit',
             'description' => 'sometimes|string|nullable',
         ]);
