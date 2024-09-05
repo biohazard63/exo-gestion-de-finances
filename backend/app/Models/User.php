@@ -75,7 +75,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Relation avec le modèle Transaction.
+     * Relation avec le modèle Gestion.
      * Un utilisateur peut avoir plusieurs transactions.
      */
     public function transactions()
