@@ -16,7 +16,7 @@ class TransactionController extends Controller
      *     description="A list of transactions",
      *     @OA\JsonContent(
      *       type="array",
-     *       @OA\Items(ref="#/components/schemas/Transaction")
+     *       @OA\Items(ref="#/components/schemas/Gestion")
      *     )
      *   )
      * )
@@ -42,8 +42,8 @@ class TransactionController extends Controller
      *   ),
      *   @OA\Response(
      *     response=201,
-     *     description="Transaction created",
-     *     @OA\JsonContent(ref="#/components/schemas/Transaction")
+     *     description="Gestion created",
+     *     @OA\JsonContent(ref="#/components/schemas/Gestion")
      *   ),
      *   @OA\Response(
      *     response=422,
@@ -83,11 +83,11 @@ class TransactionController extends Controller
      *   @OA\Response(
      *     response=200,
      *     description="A transaction",
-     *     @OA\JsonContent(ref="#/components/schemas/Transaction")
+     *     @OA\JsonContent(ref="#/components/schemas/Gestion")
      *   ),
      *   @OA\Response(
      *     response=404,
-     *     description="Transaction not found"
+     *     description="Gestion not found"
      *   )
      * )
      */
@@ -117,12 +117,12 @@ class TransactionController extends Controller
      *   ),
      *   @OA\Response(
      *     response=200,
-     *     description="Transaction updated",
-     *     @OA\JsonContent(ref="#/components/schemas/Transaction")
+     *     description="Gestion updated",
+     *     @OA\JsonContent(ref="#/components/schemas/Gestion")
      *   ),
      *   @OA\Response(
      *     response=404,
-     *     description="Transaction not found"
+     *     description="Gestion not found"
      *   ),
      *   @OA\Response(
      *     response=422,
@@ -158,11 +158,11 @@ class TransactionController extends Controller
      *   ),
      *   @OA\Response(
      *     response=204,
-     *     description="Transaction deleted"
+     *     description="Gestion deleted"
      *   ),
      *   @OA\Response(
      *     response=404,
-     *     description="Transaction not found"
+     *     description="Gestion not found"
      *   )
      * )
      */

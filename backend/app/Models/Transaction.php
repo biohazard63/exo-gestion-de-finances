@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @OA\Schema(
- *   schema="Transaction",
+ *   schema="Gestion",
  *   type="object",
  *   required={"user_id", "amount", "type"},
  *   @OA\Property(property="id", type="integer", example=1),
