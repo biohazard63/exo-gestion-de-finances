@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DollarSign, Users, CreditCard, Activity } from 'lucide-react';
+import { DollarSign, Users, CreditCard, Edit2, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import AddTransactionDialog from "@/components/AddTransactionModal.tsx";
+import AddTransactionDialog from "@/components/AddTransactionModal";
+import EditTransactionDialog from "@/components/EditTransactionDialog"; // Ensure this component is created and imported correctly
 
 function Gestion() {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [currentTransaction, setCurrentTransaction] = useState(null);
 
     useEffect(() => {
         fetchTransactions();
@@ -35,6 +39,34 @@ function Gestion() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleDelete = async (id) => {
+        const token = localStorage.getItem('token');
+        try {
+            await axios.delete(`http://localhost:8000/api/transactions/${id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            fetchTransactions();  // Refresh list after deletion
+        } catch (error) {
+            console.error('Failed to delete transaction:', error);
+        }
+    };
+
+    const handleEdit = (transaction) => {
+        setCurrentTransaction(transaction);
+        setIsEditing(true);
+    };
+
+    const handleCloseEditDialog = () => {
+        setIsEditing(false);
+        setCurrentTransaction(null);
+    };
+
+    const handleSaveEdit = (updatedTransaction) => {
+        // Implement saving logic here, possibly refreshing the list
+        console.log('Transaction updated', updatedTransaction);
+        handleCloseEditDialog();
     };
 
     const calculateTotals = transactions => transactions.reduce((acc, transaction) => {
@@ -90,7 +122,7 @@ function Gestion() {
                         {loading ? (
                             <p>Chargement des transactions...</p>
                         ) : error ? (
-                            <p>{error}</p>
+                            <p>Erreur: {error}</p>
                         ) : (
                             <Table>
                                 <TableBody>
@@ -103,11 +135,22 @@ function Gestion() {
                                             </TableCell>
                                             <TableCell>{new Date(transaction.created_at).toLocaleDateString()}</TableCell>
                                             <TableCell className="text-right">${transaction.amount.toFixed(2)}</TableCell>
+                                            <TableCell>
+                                                <div className="flex items-center space-x-2">
+                                                    <Button onClick={() => handleEdit(transaction)} title="Modifier">
+                                                        <Edit2 size={16} />
+                                                    </Button>
+                                                    <Button onClick={() => handleDelete(transaction.id)} title="Supprimer">
+                                                        <Trash2 size={16} />
+                                                    </Button>
+                                                </div>
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
                             </Table>
                         )}
+                        {isEditing && <EditTransactionDialog transaction={currentTransaction} onSave={handleSaveEdit} onClose={handleCloseEditDialog} />}
                     </CardContent>
                 </Card>
             </main>

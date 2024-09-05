@@ -9,6 +9,7 @@ import {
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.tsx";
+import {ModeToggle} from "@/components/mode-toggle.tsx";
 
 export function NavigationMenuDemo() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -96,6 +97,7 @@ export function NavigationMenuDemo() {
                     )}
                 </NavigationMenuList>
             </NavigationMenu>
+            <ModeToggle />
             {isAuthenticated && (
                 <Avatar>
                     <AvatarImage src="https://github.com/shadcn.png" />

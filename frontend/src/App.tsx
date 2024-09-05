@@ -4,10 +4,12 @@ import SignupForm from "./pages/Singup.tsx";  // Ensure filename spelling consis
 import { NavigationMenuDemo } from "./components/navBar.tsx";  // Check the export of NavigationMenuDemo
 import Gestion from "./pages/gestion.tsx";
 import LoginForm from "@/pages/Login.tsx";
-import HomePage from "@/pages/Home.tsx";  // Consider using English names for global projects
+import HomePage from "@/pages/Home.tsx";
+import {ThemeProvider} from "@/components/theme-provider.tsx";  // Consider using English names for global projects
 
 function App() {
     return (
+        <ThemeProvider>
         <BrowserRouter>
             <div>
                 <NavigationMenuDemo />
@@ -19,6 +21,7 @@ function App() {
                 </Routes>
             </div>
         </BrowserRouter>
+        </ThemeProvider>
     );
 }
 
