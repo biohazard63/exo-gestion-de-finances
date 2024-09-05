@@ -199,8 +199,8 @@ Route::middleware('auth:sanctum')->group(function () {
      * )
      */
     Route::get('/transactions', [TransactionController::class, 'index']);
-
-    /**
+// Using sanctum for API token authentication
+    Route::middleware('auth:sanctum')->get('/my-transactions', [TransactionController::class, 'MyIndex']);    /**
      * @OA\Get(
      *   path="/api/transactions/{id}",
      *   summary="Display the specified transaction",

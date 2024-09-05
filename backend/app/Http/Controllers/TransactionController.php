@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class TransactionController extends Controller
 {
@@ -24,6 +26,13 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::all();
+        return response()->json($transactions);
+    }
+
+    public function MyIndex()
+    {
+        $userId = Auth::id();  // Ensure that you're using the correct facade to get the authenticated user's ID.
+        $transactions = Transaction::where('user_id', $userId)->get();
         return response()->json($transactions);
     }
 
