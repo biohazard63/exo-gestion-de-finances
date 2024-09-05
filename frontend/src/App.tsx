@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/home.tsx';
-import { LoginForm } from "./pages/Login.tsx";
+
 import SignupForm from "./pages/Singup.tsx";  // Ensure filename spelling consistency in your project directory
 import { NavigationMenuDemo } from "./components/navBar.tsx";  // Check the export of NavigationMenuDemo
-import Gestion from "./pages/gestion.tsx";  // Consider using English names for global projects
+import Gestion from "./pages/gestion.tsx";
+import LoginForm from "@/pages/Login.tsx";
+import HomePage from "@/pages/Home.tsx";  // Consider using English names for global projects
 
 function App() {
     return (
