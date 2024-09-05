@@ -6,7 +6,9 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import AddTransactionDialog from "@/components/AddTransactionModal";
-import EditTransactionDialog from "@/components/EditTransactionDialog"; // Ensure this component is created and imported correctly
+import EditTransactionDialog from "@/components/EditTransactionDialog";
+import { BarChart, Bar, XAxis, CartesianGrid, Tooltip } from 'recharts';
+
 
 function Gestion() {
     const [transactions, setTransactions] = useState([]);
@@ -80,6 +82,21 @@ function Gestion() {
 
     const { totalDebit, totalCredit } = calculateTotals(transactions);
     const total = totalDebit + totalCredit;
+    // Prepare chart data
+    // Group transactions by month and sum amounts by type
+    const chartData = transactions.reduce((acc, cur) => {
+        const date = new Date(cur.created_at);
+        const day = date.toLocaleDateString('en-CA');  // YYYY-MM-DD format
+        if (!acc[day]) {
+            acc[day] = { day, debit: 0, credit: 0 };
+        }
+        if (cur.type === 'debit') {
+            acc[day].debit += cur.amount;
+        } else {
+            acc[day].credit += cur.amount;
+        }
+        return acc;
+    }, {});
 
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -131,17 +148,20 @@ function Gestion() {
                                             <TableCell>{transaction.customerName}</TableCell>
                                             <TableCell>{transaction.type}</TableCell>
                                             <TableCell>
-                                                <Badge className="text-xs" variant="outline">{transaction.status}</Badge>
+                                                <Badge className="text-xs"
+                                                       variant="outline">{transaction.status}</Badge>
                                             </TableCell>
                                             <TableCell>{new Date(transaction.created_at).toLocaleDateString()}</TableCell>
-                                            <TableCell className="text-right">${transaction.amount.toFixed(2)}</TableCell>
+                                            <TableCell
+                                                className="text-right">${transaction.amount.toFixed(2)}</TableCell>
                                             <TableCell>
                                                 <div className="flex items-center space-x-2">
                                                     <Button onClick={() => handleEdit(transaction)} title="Modifier">
-                                                        <Edit2 size={16} />
+                                                        <Edit2 size={16}/>
                                                     </Button>
-                                                    <Button onClick={() => handleDelete(transaction.id)} title="Supprimer">
-                                                        <Trash2 size={16} />
+                                                    <Button onClick={() => handleDelete(transaction.id)}
+                                                            title="Supprimer">
+                                                        <Trash2 size={16}/>
                                                     </Button>
                                                 </div>
                                             </TableCell>
@@ -150,7 +170,23 @@ function Gestion() {
                                 </TableBody>
                             </Table>
                         )}
-                        {isEditing && <EditTransactionDialog transaction={currentTransaction} onSave={handleSaveEdit} onClose={handleCloseEditDialog} />}
+                        {isEditing && <EditTransactionDialog transaction={currentTransaction} onSave={handleSaveEdit}
+                                                             onClose={handleCloseEditDialog}/>}
+
+                    </CardContent>
+                </Card>
+                <Card className="mt-5">
+                    <CardHeader>
+                        <CardTitle>Daily Transaction Overview</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <BarChart width={600} height={300} data={Object.values(chartData)}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="day" />
+                            <Tooltip />
+                            <Bar dataKey="debit" fill="#FF6384" name="Debit" />
+                            <Bar dataKey="credit" fill="#36A2EB" name="Credit" />
+                        </BarChart>
                     </CardContent>
                 </Card>
             </main>
